@@ -1,7 +1,7 @@
 #ifndef LISTITEM_H
 #define LISTITEM_H
 #include "_listitem.h"
-#define DEBUG
+//#define DEBUG
 
 //-----------------LISTITEM REALISATION-----------------------------
 template <typename C>
