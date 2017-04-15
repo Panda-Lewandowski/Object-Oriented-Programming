@@ -1,0 +1,4 @@
+#ifndef ITERATORLIST_H
+#define ITERATORLIST_H
+
+#endif // ITERATORLIST_H
