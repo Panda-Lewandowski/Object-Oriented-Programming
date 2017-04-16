@@ -97,8 +97,8 @@ int main()
     list<double> l2((size_t) 5);
     list<int> l3(9, 5);
     cout << l2 << "\n" << l3 << "\n";
-    int arr[5] = {1,2,3,4,5};
-    list<int> l4(arr, 4);
+    int arr[5] = {5, 1, 7, 4, 0};
+    list<int> l4(arr, 5);
     cout << l4 << "\n";
 
 
@@ -106,6 +106,9 @@ int main()
     list<int> l5(l3);
     list<int> l6(l3, 3);
     cout << l5 << "\n" << l6 << "\n";
+
+    l4.sort();
+    cout << l4;
 
 
     return 0;

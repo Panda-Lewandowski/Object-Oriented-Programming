@@ -35,16 +35,21 @@ public:
 
     list<C>& operator +=(const list<C> &l);
     list<C>& operator +=(const listItem<C>& data);
+    list<C>& operator +=(const C data);
+
+
+    list<C>& operator -=(const listItem<C>& data);
+    list<C>& operator -=(const C data);
 
     list<C>& operator +(const list<C>& l);
     list<C>& operator +(const listItem<C>& data);
+    list<C>& operator +(const C data);
 
-    bool operator ==(const list<C>& l) const;
-    bool operator >=(const list<C>& l) const;
-    bool operator <=(const list<C>& l) const;
+    bool operator ==(const list<C> &l) const;
     bool operator !=(const list<C>& l) const;
-    bool operator >(const list<C>& l) const;
-    bool operator <(const list<C>& l) const;
+
+    list<C>& operator -(const listItem<C>& data);
+    list<C>& operator -(const C data);
 
     //Methods
     size_t size() const;
@@ -52,35 +57,39 @@ public:
     bool is_empty() const;
     size_t length() const;
 
-    iterator_list<C>& at(size_t pos) const;
     iterator_list<C>& begin() const;
     iterator_list<C>& end() const;
 
     list<C>& append(const list<C>& l);
-    list<C>& append(const C& data);
+    list<C>& append(const C data);
+    list<C>& append(const listItem<C>& elem);
 
-    list<C>& new_head(const list<C>& l);
-    list<C>& new_head(const C& data);
+    list<C>& insert_front(const list<C>& l);
+    list<C> &insert_front(const C data);
+    list<C> &insert_front(const listItem<C>& elem);
 
     int compare(const list<C>& l);
 
-    list<C>& insert_after(listItem<C>& elem, list<C>& l);
+    list<C>& insert_after(listItem<C>& elem, C data);
+    list<C>& insert_after(listItem<C>& elem, list<C>& after);
     list<C>& insert_after(listItem<C>& elem, listItem<C>& after);
 
-    list<C>& insert_before(listItem<C>& elem, list<C>& l);
+    list<C>& insert_before(listItem<C>& elem, C data);
+    list<C>& insert_before(listItem<C>& elem, list<C>& before);
     list<C>& insert_before(listItem<C>& elem, listItem<C>& before);
 
-    listItem<C>& find(listItem<C>& elem) const;
-    listItem<C>& find(C data) const;
+    listItem<C> *find(const listItem<C>& elem) const;
+    listItem<C>* find(const C data) const;
 
     void sort(bool increase=true);
     void reverse();
+    C* to_array() const;
 
     list<C>& replace(listItem<C>& elem,C data);
     list<C>& replace(listItem<C>& elem, listItem<C>& temp);
 
-    listItem<C>& del(listItem<C>& elem);
-    listItem<C>& del(C data);
+    listItem<C> *del(const listItem<C>& elem);
+    listItem<C> *del(const C data);
 
      //friend std::ostream& operator<<(std::ostream& os, list<C>& l);
 
