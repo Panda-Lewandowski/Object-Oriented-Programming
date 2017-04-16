@@ -618,11 +618,11 @@ listItem<C> *list<C>::find(const C data) const
 template <typename C>
 void list<C>::sort(bool increase)
 {
-    /*C* arr = this->to_array();
+    C* arr = this->to_array();
     if( increase)
-        qsort(arr, this->length(), sizeof(C), compfunc::comp_inc);
+        qsort(arr, this->length(), sizeof(C), compfunc::comp_inc<C>);
     else
-        qsort(arr, this->length(), sizeof(C), compfunc::comp_dec);
+        qsort(arr, this->length(), sizeof(C), compfunc::comp_dec<C>);
 
     listItem<C>* tmp = this->head;
     size_t i = 0;
@@ -630,7 +630,9 @@ void list<C>::sort(bool increase)
     {
         tmp->data = arr[i];
         i++;
-    }*/
+    }
+
+    delete [] arr;
 
 }
 
