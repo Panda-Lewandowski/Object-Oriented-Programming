@@ -7,15 +7,12 @@
 template <typename C>
 listItem<C>::listItem()
 {
-    //this->data = new C;
     this->next = nullptr;
-    //TODO обработка ошибки
 }
 
 template <typename C>
 listItem<C>::listItem(C data)
 {
-    //this->data = new C;
     this->data = data;
     this->next = nullptr;
 }
@@ -23,7 +20,6 @@ listItem<C>::listItem(C data)
 template<typename C>
 listItem<C>::listItem(listItem<C> &elem)
 {
-    //если элем путой
     this->data = elem.data;
     this->next = elem.next;
 }
@@ -32,7 +28,6 @@ listItem<C>::listItem(listItem<C> &elem)
 template <typename C>
 listItem<C>::~listItem()
 {
-    //delete this->data;
 #ifdef DEBUG
     std::cout << "Деструктор класса ListItem!\n";
 #endif
@@ -42,13 +37,15 @@ listItem<C>::~listItem()
 template <typename C>
 void listItem<C>::set_next(listItem<C> &elem)
 {
-    //если елем пустой
     this->next = &elem;
 }
 
 template <typename C>
 listItem<C>& listItem<C>::get_next() const
 {
+    //if(this->next == nullptr)
+        //throw emptyError();
+
     return *(this->next);
 }
 
@@ -63,7 +60,6 @@ list<C>& listItem<C>::operator +(list<C>& l)
 template <typename C>
 bool listItem<C>::operator ==(const listItem<C>& elem) const
 {
-    //если елем пустой
     if(this->data == elem.data)
         return true;
     else
@@ -73,7 +69,6 @@ bool listItem<C>::operator ==(const listItem<C>& elem) const
 template <typename C>
 bool listItem<C>::operator >=(const listItem<C>& elem) const
 {
-    //если елем пустой
     if(this->data >= elem.data)
         return true;
     else
@@ -83,7 +78,6 @@ bool listItem<C>::operator >=(const listItem<C>& elem) const
 template <typename C>
 bool listItem<C>::operator <=(const listItem<C>& elem) const
 {
-    //если елем пустой
     if(this->data <= elem.data)
         return true;
     else
@@ -93,7 +87,6 @@ bool listItem<C>::operator <=(const listItem<C>& elem) const
 template <typename C>
 bool listItem<C>::operator !=(const listItem<C>& elem) const
 {
-    //если елем пустой
     if(this->data != elem.data)
         return true;
     else
@@ -103,7 +96,6 @@ bool listItem<C>::operator !=(const listItem<C>& elem) const
 template <typename C>
 bool listItem<C>::operator >(const listItem<C>& elem) const
 {
-    //если елем пустой
     if(this->data > elem.data)
         return true;
     else
@@ -113,7 +105,6 @@ bool listItem<C>::operator >(const listItem<C>& elem) const
 template <typename C>
 bool listItem<C>::operator <(const listItem<C>& elem) const
 {
-    //если елем пустой
     if(this->data < elem.data)
         return true;
     else
@@ -123,7 +114,6 @@ bool listItem<C>::operator <(const listItem<C>& elem) const
 template <typename C>
 std::ostream& operator<<(std::ostream& os, listItem<C>& elem)
 {
-    //проверка на пустоту
     os << "listItem with data: " << elem.data << "\n";
     os << "Next item at "<< elem.next;
     if (elem.next != nullptr)

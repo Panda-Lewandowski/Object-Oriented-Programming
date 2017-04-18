@@ -98,7 +98,7 @@ int main()
     list<int> l3(9, 5);
     cout << l2 << "\n" << l3 << "\n";
     int arr[5] = {5, 1, 7, 4, 0};
-    list<int> l4(arr, 5);
+    list<int> l4(arr, 4);
     cout << l4 << "\n";
 
 
@@ -107,9 +107,36 @@ int main()
     list<int> l6(l3, 3);
     cout << l5 << "\n" << l6 << "\n";
 
-    l4.sort();
-    cout << l4;
+    cout << "√ Тестирование методов √\n\n";
 
+    cout << "• Размер списка из 4 элементов : "<< l4.size() << "\n" ;
+    cout << "• Длина списка из 4 элементов : "<< l4.length() << "\n" ;
+
+    cout << "• Пустой ли список, созданный конструктором по умолчанию?  "<< l1.is_empty() << "\n" ;
+    l1.append(2);
+    cout << "• Пустой ли он после добовления элемента? "<< l1.is_empty() << "\n" ;
+
+    cout << "• Добавим к нему еще список •\n";
+    //l1.append(l4);
+    cout << l1;
+    cout << "• ...И элемент •\n";
+    listItem<int> item8(10);
+    l1.append(item8);
+    cout << l1;
+
+
+    cout << "• Вставим в начало поочередно число, елемент и список •\n";
+    l1.insert_front(6);
+    l1.insert_front(item5);
+    //l1.insert_front(l6);
+    cout << l1;
+
+    cout << "• Отсортируем список •\n";
+    l1.sort();
+    cout << l1;
+    cout << "• ...И перевернем •\n";
+    l1.reverse();
+    cout << l1;
 
     return 0;
 }

@@ -2,6 +2,7 @@
 #define LIST_H
 #include "_list.h"
 #include <stdlib.h>
+#include <assert.h>
 //#define DEBUG
 //------------------LIST REALISATION---------------------------------
 
@@ -25,53 +26,67 @@ int comp_dec (const void * a, const void * b)
 template <typename C>
 list<C>::list()
 {
-    //ошибка выделения памяти
-     listItem<C>* head = new listItem<C>;
-     this->head = head;
+     this->head = nullptr;
 }
 
 template <typename C>
 list<C>::list(const list<C> &l)
 {
-    //если l пустой?
-    listItem<C>* cur;
-    listItem<C>* head = new listItem<C>;
-    head->data = l.head->data;
-
-    this->head = head;
-    listItem<C>* tmp = head;
-    cur = l.head->next;
-
-    for(; cur; cur = cur->next)
+    if(!l.head)
+        this->head = nullptr;
+    else
     {
-        listItem<C>* item = new listItem<C>;
-        tmp->next = item;
-        item->data = cur->data;
-        tmp = tmp->next;
+        listItem<C>* cur;
+        listItem<C>* head = new listItem<C>;
+        //if(!head)
+            //throw memError();
+        head->data = l.head->data;
+
+        this->head = head;
+        listItem<C>* tmp = head;
+        cur = l.head->next;
+
+        for(; cur; cur = cur->next)
+        {
+            listItem<C>* item = new listItem<C>;
+            //if(!item)
+                //throw memError();
+            tmp->next = item;
+            item->data = cur->data;
+            tmp = tmp->next;
+        }
     }
+
 
 }
 
 template <typename C>
 list<C>::list(list<C> &&l)
 {
-    //если эль пустой?
     this->head = l.head;
-
 }
 
 template <typename C>
 list<C>::list(size_t n)
 {
-    //если эн равно 0?
-    listItem<C>* head = new listItem<C>;
-    this->head = head;
-    listItem<C>* cur = head;
-    for(size_t i = 0; i < n - 1; i++)
+    assert(n > 0);
+    if(n == 0)
+        this->head = nullptr;
+    else
     {
-        listItem<C>* item = new listItem<C>;
-        cur->next = item;
-        cur = item;
+        listItem<C>* head = new listItem<C>;
+        //if(!head)
+            //throw memError();
+        this->head = head;
+        listItem<C>* cur = head;
+        for(size_t i = 0; i < n - 1; i++)
+        {
+            listItem<C>* item = new listItem<C>;
+            //if(!item)
+                //throw memError();
+            cur->next = item;
+            cur = item;
+        }
     }
 }
 
@@ -79,19 +94,27 @@ list<C>::list(size_t n)
 template <typename C>
 list<C>::list(C *mass, int n)
 {
-    //если массив пустой?
-    //есои эн равно нулю?
-    listItem<C>* head = new listItem<C>;
-    this->head = head;
-    this->head->data = mass[0];
-    listItem<C>* cur = head;
-
-    for(int i = 1; i < n; i++)
+    assert(n > 0);
+    if(mass == nullptr || n == 0)
+        this->head = nullptr;
+    else
     {
-        listItem<C>* item = new listItem<C>;
-        item->data = mass[i];
-        cur->next = item;
-        cur = item;
+        listItem<C>* head = new listItem<C>;
+        //if(!head)
+            //throw memError();
+        this->head = head;
+        this->head->data = mass[0];
+        listItem<C>* cur = head;
+
+        for(int i = 1; i < n; i++)
+        {
+            listItem<C>* item = new listItem<C>;
+            //if(!item)
+                //throw memError();
+            item->data = mass[i];
+            cur->next = item;
+            cur = item;
+        }
     }
 
 }
@@ -99,41 +122,59 @@ list<C>::list(C *mass, int n)
 template <typename C>
 list<C>::list(C data, size_t n)
 {
-    //если эн равно нулю?
-    listItem<C>* head = new listItem<C>;
-    head->data = data;
-    this->head = head;
-    listItem<C>* cur = head;
-    for(size_t i = 0; i < n - 1; i++)
+    assert(n > 0);
+    if(n == 0)
+        this->head = nullptr;
+    else
     {
-        listItem<C>* item = new listItem<C>;
-        item->data = data;
-        cur->next = item;
-        cur = item;
+        listItem<C>* head = new listItem<C>;
+        //if(!head)
+            //throw memError();
+        head->data = data;
+        this->head = head;
+        listItem<C>* cur = head;
+        for(size_t i = 0; i < n - 1; i++)
+        {
+            listItem<C>* item = new listItem<C>;
+            //if(!item)
+                //throw memError();
+            item->data = data;
+            cur->next = item;
+            cur = item;
+        }
     }
 }
 
 template <typename C>
 list<C>::list(const list<C> &l, size_t n)
 {
-    //если список пустой
-    //если эн равно нулю
-    listItem<C>* cur;
-    listItem<C>* head = new listItem<C>;
-    head->data = l.head->data;
-    n--;
 
-    this->head = head;
-    listItem<C>* tmp = head;
-    cur = l.head->next;
-
-    for(; cur && n; cur = cur->next)
+    assert(n > 0);
+    if(!l.head || n == 0)
+        this->head = nullptr;
+    else
     {
-        listItem<C>* item = new listItem<C>;
-        tmp->next = item;
-        item->data = cur->data;
-        tmp = tmp->next;
+        listItem<C>* cur;
+        listItem<C>* head = new listItem<C>;
+        //if(!head)
+            //throw memError();
+        head->data = l.head->data;
         n--;
+
+        this->head = head;
+        listItem<C>* tmp = head;
+        cur = l.head->next;
+
+        for(; cur && n; cur = cur->next)
+        {
+            listItem<C>* item = new listItem<C>;
+            //if(!item)
+                //throw memError();
+            tmp->next = item;
+            item->data = cur->data;
+            tmp = tmp->next;
+            n--;
+        }
     }
 }
 
@@ -161,6 +202,7 @@ list<C>::~list()
 template <typename C>
 list<C>& list<C>::operator =(const list<C>& l)
 {
+
 
 }
 
@@ -283,7 +325,6 @@ size_t list<C>::size() const
 template <typename C>
 void list<C>::clear()
 {
-    //если список пустой
     listItem<C>* cur = this->head;
     for(; cur; cur = cur->next)
     {
@@ -301,7 +342,6 @@ bool list<C>::is_empty() const
 template <typename C>
 size_t list<C>::length() const
 {
-    //если список пустой
     listItem<C>* cur = this->head;
     size_t s = 0;
     for(; cur; cur = cur->next)
@@ -316,18 +356,33 @@ size_t list<C>::length() const
 template <typename C>
 iterator_list<C>& list<C>::begin() const
 {
+    iterator_list<C> it(*this);
+    it.first();
+
+    return it;
 
 }
 
 template <typename C>
 iterator_list<C>& list<C>::end() const
 {
+    iterator_list<C> it(*this);
+    it.last();
+
+
+    return it;
 
 }
 
 template <typename C>
 list<C>& list<C>::append(const list<C>& l)
 {
+    if(!this->head)
+    {
+        this = l;
+        return *this;
+    }
+
     listItem<C>* cur = this->head;
     for(; cur->next; cur = cur->next);
 
@@ -335,6 +390,8 @@ list<C>& list<C>::append(const list<C>& l)
     for(;tmp;tmp = tmp->next)
     {
         listItem<C>* item = new listItem<C>;
+        //if(!item)
+            //throw memError();
         item->data = tmp->data;
         cur->next = item;
         cur = item;
@@ -349,9 +406,21 @@ list<C>& list<C>::append(const list<C>& l)
 template <typename C>
 list<C>& list<C>::append(const C data)
 {
+    if(!this->head)
+    {
+        listItem<C>* head = new listItem<C>;
+        //if(!head)
+            //throw memError();
+        head->data = data;
+        this->head = head;
+        return *this;
+    }
+
     listItem<C>* cur = this->head;
     for(; cur->next; cur = cur->next);
     listItem<C>* new_item = new listItem<C>;
+    //if(!new_item)
+        //throw memError();
     new_item->data = data;
     cur->next = new_item;
     return *this;
@@ -362,9 +431,21 @@ list<C>& list<C>::append(const C data)
 template <typename C>
 list<C>& list<C>::append(const listItem<C>& elem)
 {
+    if(!this->head)
+    {
+        listItem<C>* head = new listItem<C>;
+        //if(!head)
+            //throw memError();
+        head->data = elem.data;
+        this->head = head;
+        return *this;
+    }
+
     listItem<C>* cur = this->head;
     for(; cur->next; cur = cur->next);
     listItem<C>* new_item = new listItem<C>;
+    //if(!new_item)
+        //throw memError();
     new_item->data = elem.data;
     cur->next = new_item;
     return *this;
@@ -374,9 +455,18 @@ list<C>& list<C>::append(const listItem<C>& elem)
 template <typename C>
 list<C>& list<C>::insert_front(const list<C>& l)
 {
-    //если эль путсой
+    if(!l.head)
+        return *this;
+
+    if(!this->head)
+    {
+        this->append(l);
+        return *this;
+    }
     listItem<C>* cur;
     listItem<C>* head = new listItem<C>;
+    //if(!head)
+        //throw memError();
     head->data = l.head->data;
 
     listItem<C>* tmp = head;
@@ -385,6 +475,8 @@ list<C>& list<C>::insert_front(const list<C>& l)
     for(; cur; cur = cur->next)
     {
         listItem<C>* item = new listItem<C>;
+        //if(!item)
+            //throw memError();
         tmp->next = item;
         item->data = cur->data;
         item->next = this->head;
@@ -401,8 +493,16 @@ list<C>& list<C>::insert_front(const list<C>& l)
 template <typename C>
 list<C>& list<C>::insert_front(const C data)
 {
-    //ошибка выделения памяти
+
+    if(!this->head)
+    {
+        this->append(data);
+        return *this;
+    }
+
     listItem<C>* new_head = new listItem<C>;
+    //if(!new_head)
+        //throw memError();
     new_head->data = data;
     new_head->next = this->head;
     this->head = new_head;
@@ -413,8 +513,15 @@ list<C>& list<C>::insert_front(const C data)
 template <typename C>
 list<C>& list<C>::insert_front(const listItem<C>& elem)
 {
-    //ошибка выделения памяти
+    if(!this->head)
+    {
+        this->append(elem);
+        return *this;
+    }
+
     listItem<C>* new_head = new listItem<C>;
+    //if(!new_head)
+        //throw memError();
     new_head->data = elem.data;
     new_head->next = this->head;
     this->head = new_head;
@@ -441,9 +548,10 @@ template <typename C>
 list<C>& list<C>::insert_after(listItem<C>& after, C data)
 {
     listItem<C>* f = this->find(after);
-    //если не найдено?
     listItem<C>* tmp = f->next;
     listItem<C>* item = new listItem<C>;
+    //if(!item)
+        //throw memError();
     item->data = data;
     f->next = item;
     item->next = tmp;
@@ -455,10 +563,11 @@ template <typename C>
 list<C>& list<C>::insert_after(listItem<C>& after, list<C>&  l)
 {
     listItem<C>* f = this->find(after);
-    //если не найдено?
     listItem<C>* buf = f->next;
     listItem<C>* cur;
     listItem<C>* head = new listItem<C>;
+    //if(!head)
+        //throw memError();
     head->data = l.head->data;
 
     listItem<C>* tmp = head;
@@ -467,6 +576,8 @@ list<C>& list<C>::insert_after(listItem<C>& after, list<C>&  l)
     for(; cur; cur = cur->next)
     {
         listItem<C>* item = new listItem<C>;
+        //if(!item)
+            //throw memError();
         tmp->next = item;
         item->data = cur->data;
         item->next = buf;
@@ -482,9 +593,10 @@ template <typename C>
 list<C>& list<C>::insert_after(listItem<C>& after, listItem<C>& elem)
 {
     listItem<C>* f = this->find(after);
-    //если не найдено?
     listItem<C>* tmp = f->next;
     listItem<C>* item = new listItem<C>;
+    //if(!item)
+        //throw memError();
     item->data = elem.data;
     f->next = item;
     item->next = tmp;
@@ -502,11 +614,12 @@ list<C>& list<C>::insert_before(listItem<C>& before, C data)
         tmp = cur;
         cur = cur->next;
     }
-    //если не найдено?
 
     if (tmp != nullptr)
     {
         listItem<C>* item = new listItem<C>;
+        //if(!item)
+            //throw memError();
         item->data = data;
         tmp->next = item;
         item->next = cur;
@@ -531,12 +644,13 @@ list<C>& list<C>::insert_before(listItem<C>& before, list<C>& l)
         tmp = cur;
         cur = cur->next;
     }
-    //если не найдено?
 
     if (tmp != nullptr)
     {
         listItem<C>* curr;
         listItem<C>* head = new listItem<C>;
+        //if(!head)
+            //throw memError();
         head->data = l.head->data;
 
         listItem<C>* buf = head;
@@ -545,6 +659,8 @@ list<C>& list<C>::insert_before(listItem<C>& before, list<C>& l)
         for(; curr; curr = curr->next)
         {
             listItem<C>* item = new listItem<C>;
+            //if(!item)
+                //throw memError();
             buf->next = item;
             item->data = curr->data;
             item->next = cur;
@@ -573,11 +689,12 @@ list<C>& list<C>::insert_before(listItem<C>& before, listItem<C>& elem)
         tmp = cur;
         cur = cur->next;
     }
-    //если не найдено?
 
     if (tmp != nullptr)
     {
         listItem<C>* item = new listItem<C>;
+        //if(!item)
+            //throw memError();
         item->data = elem.data;
         tmp->next = item;
         item->next = cur;
@@ -593,7 +710,8 @@ list<C>& list<C>::insert_before(listItem<C>& before, listItem<C>& elem)
 template <typename C>
 listItem<C>* list<C>::find(const listItem<C> &elem) const
 {
-    //если елем пустой
+    //if(!this->head)
+        //throw emptyError();
     listItem<C>* cur = this->head;
     while (cur && cur->data != elem.data)
         cur = cur->next;
@@ -605,7 +723,8 @@ listItem<C>* list<C>::find(const listItem<C> &elem) const
 template <typename C>
 listItem<C> *list<C>::find(const C data) const
 {
-    //если елем пустой
+    //if(!this->head)
+        //throw emptyError();
     listItem<C>* cur = this->head;
     while (cur && cur->data != data)
         cur = cur->next;
@@ -639,6 +758,8 @@ void list<C>::sort(bool increase)
 template <typename C>
 void list<C>::reverse()
 {
+    //if(this->length() < 3)
+       // throw rangeError();
     listItem<C>* one = this->head;
     listItem<C>* two = one->next;
     listItem<C>* three = two->next;
@@ -660,8 +781,10 @@ template <typename C>
 C* list<C>::to_array() const
 {
      C* arr = new C[this->length()];
+     //if(!arr)
+         //throw memError();
      listItem<C>* tmp = this->head;
-     for(int i  = 0;  i < this->length(); i++)
+     for(size_t i  = 0;  i < this->length(); i++)
      {
          arr[i] = tmp->data;
          tmp = tmp->next;
@@ -674,7 +797,6 @@ template <typename C>
 list<C>& list<C>::replace(listItem<C>& elem,C data)
 {
     listItem<C>* f = this->find(elem);
-    //если не найдено?
     f->data = data;
     return *this;
 
@@ -684,7 +806,6 @@ template <typename C>
 list<C>& list<C>::replace(listItem<C>& elem, listItem<C>& temp)
 {
     listItem<C>* f = this->find(elem);
-    //если не найдено?
     f->data = temp.data;
     return *this;
 
@@ -693,8 +814,9 @@ list<C>& list<C>::replace(listItem<C>& elem, listItem<C>& temp)
 template <typename C>
 listItem<C>* list<C>::del(const listItem<C> &elem)
 {
+    //(!this->head)
+        //throw emptyError();
     listItem<C>* f = this->find(elem);
-    //если не найдено?
     listItem<C>* cur = this->head;
     if(cur->data == elem.data)
     {
@@ -712,8 +834,9 @@ listItem<C>* list<C>::del(const listItem<C> &elem)
 template <typename C>
 listItem<C>* list<C>::del(const C data)
 {
+    //(!this->head)
+        //throw emptyError();
     listItem<C>* f = this->find(data);
-    //если не найдено?
     listItem<C>* cur = this->head;
     if(cur->data == data)
     {

@@ -1,7 +1,8 @@
 #ifndef _LISTITEM_H
 #define _LISTITEM_H
 #include <iostream>
-#include "list.h"
+#include "_list.h"
+#include "_errors.h"
 
 template <typename  C> class list;
 
