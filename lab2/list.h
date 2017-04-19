@@ -202,7 +202,36 @@ list<C>::~list()
 template <typename C>
 list<C>& list<C>::operator =(const list<C>& l)
 {
+    if(this->length() <= l.length())
+    {
+        listItem<C>* curl = l.head;
+        listItem<C>* curt = this->head;
+        for(; curt; curt = curt->next)
+        {
+            curt->data = curl->data;
+            curl = curl->next;
+        }
 
+    }
+    else
+    {
+        listItem<C>* curl = l.head;
+        listItem<C>* curt = this->head;
+        for(; curt; curt = curt->next)
+        {
+
+            if(curl)
+            {
+                curt->data = curl->data;
+                curl = curl->next;
+            }
+            else
+            {
+                this->del(*curt);
+            }
+        }
+
+    }
 
 }
 
