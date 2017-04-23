@@ -58,4 +58,5 @@ public:
 
     int difference(const iterator_list<C> &it);
 };
+//стрелочка
 #endif // _ITERATORLIST_H

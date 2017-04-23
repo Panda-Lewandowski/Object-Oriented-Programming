@@ -10,7 +10,7 @@ int main()
             "Тестирование класса ListItem\n"
             "-------------------------------------------------------\n";
 
-    cout << "√ Тестирование контсрукторов √\n\n";
+    /*cout << "√ Тестирование контсрукторов √\n\n";
 
     listItem<int> item1;
     //item1.data = 10;
@@ -81,7 +81,7 @@ int main()
     cout << (item2 >= item7) << "\n\n";
 
     cout << "item#1 <= item#4 ?\n";
-    cout << (item2 <= item7) << "\n\n";
+    cout << (item2 <= item7) << "\n\n";*/
 
     cout << "-------------------------------------------------------\n"
             "Тестирование класса List\n"
@@ -117,26 +117,30 @@ int main()
     cout << "• Пустой ли он после добовления элемента? "<< l1.is_empty() << "\n" ;
 
     cout << "• Добавим к нему еще список •\n";
-    //l1.append(l4);
-    cout << l1;
-    cout << "• ...И элемент •\n";
-    listItem<int> item8(10);
-    l1.append(item8);
+    l1.append(l4);
     cout << l1;
 
 
-    cout << "• Вставим в начало поочередно число, елемент и список •\n";
+    cout << "• Вставим в начало поочередно число и список •\n";
     l1.insert_front(6);
-    l1.insert_front(item5);
-    //l1.insert_front(l6);
+    l1.insert_front(l6);
     cout << l1;
 
     cout << "• Отсортируем список •\n";
     l1.sort();
     cout << l1;
     cout << "• ...И перевернем •\n";
-    l1.reverse();
+    //l1.reverse();
     cout << l1;
+
+    cout << "• Превратим последний список в массив •\n";
+    int* mass = l1.to_array();
+    for(size_t i = 0; i < l1.length();  i++)
+    {
+        cout << mass[i] << " ";
+    }
+
+
 
     return 0;
 }

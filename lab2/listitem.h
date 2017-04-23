@@ -41,12 +41,31 @@ void listItem<C>::set_next(listItem<C> &elem)
 }
 
 template <typename C>
-listItem<C>& listItem<C>::get_next() const
+void listItem<C>::destroy_next()
+{
+    this->next = nullptr;
+}
+
+template <typename C>
+listItem<C>* listItem<C>::get_next() const
 {
     //if(this->next == nullptr)
         //throw emptyError();
 
-    return *(this->next);
+    return this->next;
+}
+
+
+template <typename C>
+C listItem<C>::get_data() const
+{
+    return this->data;
+}
+
+template <typename C>
+void listItem<C>::set(C data)
+{
+    this->data = data;
 }
 
 template <typename C>

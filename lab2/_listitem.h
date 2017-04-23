@@ -9,15 +9,21 @@ template <typename  C> class list;
 template <typename C>
 class listItem
 {
-public:
+protected:
     listItem* next;
     C data;
+public:
+
     listItem();
     listItem(C data);
-    listItem(listItem<C>& elem);
+    explicit listItem(listItem<C>& elem);
     ~listItem();
+
     void set_next(listItem<C>& elem);
-    listItem<C>& get_next() const;
+    void destroy_next();
+    listItem<C> *get_next() const;
+    C get_data() const;
+    void set(C data);
 
     list<C>& operator +(list<C> &l);
 
@@ -28,7 +34,7 @@ public:
     bool operator >(const listItem<C>& l) const;
     bool operator <(const listItem<C>& l) const;
 
-    //friend std::ostream& operator<<(std::ostream& os, listItem<C>& elem);
+    friend std::ostream& operator<<(std::ostream& os, listItem<C>& elem);
 };
 
 #endif // _LISTITEM_H
