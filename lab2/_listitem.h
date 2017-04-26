@@ -34,7 +34,7 @@ public:
     bool operator >(const listItem<C>& l) const;
     bool operator <(const listItem<C>& l) const;
 
-    friend std::ostream& operator<<(std::ostream& os, listItem<C>& elem);
+    //friend std::ostream& operator<<(std::ostream& os, listItem<C>& elem);
 };
 
 #endif // _LISTITEM_H

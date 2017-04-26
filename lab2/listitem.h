@@ -133,10 +133,10 @@ bool listItem<C>::operator <(const listItem<C>& elem) const
 template <typename C>
 std::ostream& operator<<(std::ostream& os, listItem<C>& elem)
 {
-    os << "listItem with data: " << elem.data << "\n";
-    os << "Next item at "<< elem.next;
-    if (elem.next != nullptr)
-        os << " with data: "<< elem.next->data << "\n";
+    os << "listItem with data: " << elem.get_data() << "\n";
+    os << "Next item at "<< elem.get_next();
+    if (elem.get_next() != nullptr)
+        os << " with data: "<< elem.get_next()->get_data() << "\n";
     else
         os << "\n";
     return os;

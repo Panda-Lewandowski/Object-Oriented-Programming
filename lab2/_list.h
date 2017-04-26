@@ -18,15 +18,24 @@ class list : public baseContainer
 protected:
     listItem<C>* head;
     listItem<C>* tail;
+
     list<C>& operator +=(const listItem<C>& data);
     list<C>& operator +(const listItem<C>& data);
     list<C>& operator -(const listItem<C>& data);
     list<C>& operator -=(const listItem<C> &data);
     list<C>& operator -=(const C data);
+
     list<C>& append(const listItem<C>& elem);
     list<C>& insert_front(const listItem<C>& elem);
+
     list<C>& insert_after(listItem<C>& elem, listItem<C>& after);
+    list<C>& insert_after(listItem<C>& elem, C data);
+    list<C>& insert_after(listItem<C>& elem, list<C>& after);
+
     list<C>& insert_before(listItem<C>& elem, listItem<C>& before);
+    list<C>& insert_before(listItem<C>& elem, C data);
+    list<C>& insert_before(listItem<C>& elem, list<C>& before);
+
     listItem<C> *find(const listItem<C>& elem) const;
     list<C>& replace(listItem<C>& elem, listItem<C>& temp);
     listItem<C> *del(const listItem<C>& elem);
@@ -80,15 +89,13 @@ public:
     list<C>& insert_front(const list<C>& l);
     list<C>& insert_front(const C data);
 
+    list<C>& insert_after(iterator_list<C>& iter, C data);
+    list<C>& insert_after(iterator_list<C>& iter, list<C>& after);
+
+    list<C>& insert_before(iterator_list<C>& iter, C data);
+    list<C>& insert_before(iterator_list<C>& iter, list<C>& before);
 
     int compare(const list<C>& l);
-
-    list<C>& insert_after(listItem<C>& elem, C data);
-    list<C>& insert_after(listItem<C>& elem, list<C>& after);
-
-    list<C>& insert_before(listItem<C>& elem, C data);
-    list<C>& insert_before(listItem<C>& elem, list<C>& before);
-
 
     listItem<C>* find(const C data) const;
 

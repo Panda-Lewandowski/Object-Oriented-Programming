@@ -1,6 +1,8 @@
 #include <iostream>
 #include "list.h"
 #include "listitem.h"
+#include "iteratorlist.h"
+#include "_errors.h"
 
 using namespace std;
 
@@ -105,7 +107,8 @@ int main()
     cout << "• Конструктор копирования • \n";
     list<int> l5(l3);
     list<int> l6(l3, 3);
-    cout << l5 << "\n" << l6 << "\n";
+    cout << l5 << "\n";
+    cout << l6 << "\n";
 
     cout << "√ Тестирование методов √\n\n";
 
@@ -126,11 +129,26 @@ int main()
     l1.insert_front(l6);
     cout << l1;
 
+    cout << "• С помощью итератора вставим на 3 позицию элемент(10) и на 5 позицию список•\n";
+    iterator_list<int> i(l1);
+    i += 3;
+    l1.insert_after(i, 10);
+    i += 2;
+    l1.insert_after(i, l4);
+    cout << l1;
+
+    cout << "• С помощью итератора вставим перед 6 позицией элемент(8) и список перед 7 позицией •\n";
+    i += 1;
+    l1.insert_before(i, 8);
+    i += 1;
+    l1.insert_before(i, l3);
+    cout << l1;
+
     cout << "• Отсортируем список •\n";
     l1.sort();
     cout << l1;
     cout << "• ...И перевернем •\n";
-    //l1.reverse();
+    l1.reverse();
     cout << l1;
 
     cout << "• Превратим последний список в массив •\n";
@@ -139,8 +157,6 @@ int main()
     {
         cout << mass[i] << " ";
     }
-
-
 
     return 0;
 }
