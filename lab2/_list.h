@@ -5,7 +5,7 @@
 #include "_errors.h"
 #include "_iteratorlist.h"
 #include "_listitem.h"
-#include  "base.h"
+#include  "base.hpp"
 
 
 template <typename C> class iterator_list;
@@ -39,6 +39,8 @@ protected:
     listItem<C> *find(const listItem<C>& elem) const;
     list<C>& replace(listItem<C>& elem, listItem<C>& temp);
     listItem<C> *del(const listItem<C>& elem);
+
+    list<C>& replace(listItem<C>& elem,C data);
 public:
 
     //Constructors
@@ -103,7 +105,7 @@ public:
     void reverse();
     C* to_array() const;
 
-    list<C>& replace(listItem<C>& elem,C data);
+    list<C>& replace(iterator_list<C>& iter,C data);
     listItem<C> *del(const C data);
 
      //friend std::ostream& operator<<(std::ostream& os, list<C>& l);

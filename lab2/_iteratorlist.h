@@ -44,6 +44,7 @@ public:
     iterator_list<C>& operator ++(int);
 
     listItem<C>& operator *();
+    listItem<C>* operator ->();
 
     iterator_list<C>& operator +=(size_t n);
 
@@ -57,6 +58,41 @@ public:
     bool operator >= (const iterator_list<C>& it) const;
 
     int difference(const iterator_list<C> &it);
+
+    friend class list<C>;
+    friend class listItem<C>;
 };
-//стрелочка
+
+
+template <class C>
+class const_iterator_list : public iteratorBase< listItem<C> >
+{
+private:
+    const list<C>* _list;
+public:
+    const_iterator_list(const list<C>& l);
+    const_iterator_list(const const_iterator_list<C>& it);
+    ~const_iterator_list();
+
+    void first();
+    void next();
+    void last();
+    bool inRange();
+    const C& current() const;
+
+    const listItem<C>& operator *();
+    const listItem<C>* operator ->();
+
+    bool operator != (const const_iterator_list<C>& it) const;
+    bool operator == (const const_iterator_list<C>& it) const;
+    bool operator <  (const const_iterator_list<C>& it) const;
+    bool operator >  (const const_iterator_list<C>& it) const;
+    bool operator <= (const const_iterator_list<C>& it) const;
+    bool operator >= (const const_iterator_list<C>& it) const;
+
+    int difference(const const_iterator_list<C> &it);
+
+    friend class list<C>;
+    friend class listItem<C>;
+};
 #endif // _ITERATORLIST_H

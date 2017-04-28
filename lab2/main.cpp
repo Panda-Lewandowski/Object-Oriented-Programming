@@ -1,7 +1,7 @@
 #include <iostream>
-#include "list.h"
-#include "listitem.h"
-#include "iteratorlist.h"
+#include "list.hpp"
+#include "listitem.hpp"
+#include "iteratorlist.hpp"
 #include "_errors.h"
 
 using namespace std;
@@ -158,5 +158,27 @@ int main()
         cout << mass[i] << " ";
     }
 
+    cout << "\n";
+    cout << "• Удалим голову списка по значению •\n";
+    l1.del(10);
+    cout << l1;
+
+    cout << "• Удалим элемент посередине списка по значению •\n";
+    l1.del(8);
+    cout << l1;
+
+    cout << "• Удалим повторяющийся элемент по значению •\n";
+    l1.del(1);
+    cout << l1;
+
+    cout << "• Удалим хвост списка по значению •\n";
+    l1.del(1);
+    cout << l1;
+
+    cout << "• Заменим в уникальном списке(множестве) второй элемент •\n";
+    iterator_list<int> j(l4);
+    j += 1;
+    l4.replace(j, 777);
+    cout << l4;
     return 0;
 }
