@@ -23,7 +23,6 @@ protected:
     list<C>& operator +(const listItem<C>& data);
     list<C>& operator -(const listItem<C>& data);
     list<C>& operator -=(const listItem<C> &data);
-    list<C>& operator -=(const C data);
 
     list<C>& append(const listItem<C>& elem);
     list<C>& insert_front(const listItem<C>& elem);
@@ -62,16 +61,18 @@ public:
 
     list<C>& operator +=(const list<C> &l);
     list<C>& operator +=(const C data);
+    list<C>& operator -=(const C data);
 
     list<C>& operator +(const list<C>& l);
 
     list<C>& operator +(const C data);
+    list<C>& operator -(const C data);
 
     bool operator ==(const list<C> &l) const;
     bool operator !=(const list<C>& l) const;
 
 
-    list<C>& operator -(const C data);
+
 
     //Methods
     size_t size() const;
@@ -108,9 +109,7 @@ public:
     list<C>& replace(iterator_list<C>& iter,C data);
     listItem<C> *del(const C data);
 
-     //friend std::ostream& operator<<(std::ostream& os, list<C>& l);
-
-
+    //friend std::ostream& operator<<(std::ostream& os, list<C>& l);
 
 };
 
