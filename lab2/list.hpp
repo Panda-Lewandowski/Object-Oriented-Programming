@@ -41,8 +41,8 @@ list<C>::list(const list<C> &l)
     {
         listItem<C>* cur;
         listItem<C>* head = new listItem<C>;
-        //if(!head)
-            //throw memError();
+        if(!head)
+            throw memError();
         head->set(l.head->get_data());
         this->head = head;
         listItem<C>* tmp = head;
@@ -51,8 +51,8 @@ list<C>::list(const list<C> &l)
         for(; cur; cur = cur->get_next())
         {
             listItem<C>* item = new listItem<C>;
-            //if(!item)
-                //throw memError();
+            if(!item)
+                throw memError();
             tmp->set_next(*item);
             item->set(cur->get_data());
             this->tail = item;
@@ -82,15 +82,15 @@ list<C>::list(size_t n)
     else
     {
         listItem<C>* head = new listItem<C>;
-        //if(!head)
-           // throw memError();
+        if(!head)
+           throw memError();
         this->head = head;
         listItem<C>* cur = head;
         for(size_t i = 0; i < n - 1; i++)
         {
             listItem<C>* item = new listItem<C>;
-            //if(!item)
-                //throw memError();
+            if(!item)
+                throw memError();
             cur->set_next(*item);
             cur = item;
         }
@@ -108,8 +108,8 @@ list<C>::list(C *mass, int n)
     else
     {
         listItem<C>* head = new listItem<C>;
-        //if(!head)
-            //throw memError();
+        if(!head)
+            throw memError();
         this->head = head;
         this->head->set(mass[0]);
         listItem<C>* cur = head;
@@ -117,8 +117,8 @@ list<C>::list(C *mass, int n)
         for(int i = 1; i < n; i++)
         {
             listItem<C>* item = new listItem<C>;
-            //if(!item)
-                //throw memError();
+            if(!item)
+                throw memError();
 
             item->set(mass[i]);
             cur->set_next(*item);
@@ -138,16 +138,16 @@ list<C>::list(C data, size_t n)
     else
     {
         listItem<C>* head = new listItem<C>;
-        //if(!head)
-            //throw memError();
+        if(!head)
+            throw memError();
         head->set(data);
         this->head = head;
         listItem<C>* cur = head;
         for(size_t i = 0; i < n - 1; i++)
         {
             listItem<C>* item = new listItem<C>;
-            //if(!item)
-                //throw memError();
+            if(!item)
+                throw memError();
             item->set(data);
             cur->set_next(*item);
             cur = item;
@@ -170,8 +170,8 @@ list<C>::list(const list<C> &l, size_t n)
     {
         listItem<C>* cur;
         listItem<C>* head = new listItem<C>;
-        //if(!head)
-            //throw memError();
+        if(!head)
+            throw memError();
         head->set(l.head->get_data());
         n--;
 
@@ -182,8 +182,8 @@ list<C>::list(const list<C> &l, size_t n)
         for(; cur && n; cur = cur->get_next())
         {
             listItem<C>* item = new listItem<C>;
-            //if(!item)
-                //throw memError();
+            if(!item)
+                throw memError();
             tmp->set_next(*item);
             item->set(cur->get_data());
             this->tail = item;
@@ -450,8 +450,8 @@ list<C>& list<C>::append(const list<C>& l)
     for(;tmp;tmp = tmp->get_next())
     {
         listItem<C>* item = new listItem<C>;
-        //if(!item)
-            //throw memError();
+        if(!item)
+            throw memError();
         item->set(tmp->get_data());
         cur->set_next(*item);
         cur = item;
@@ -470,8 +470,8 @@ list<C>& list<C>::append(const C data)
     if(!this->head)
     {
         listItem<C>* head = new listItem<C>;
-        //if(!head)
-            //throw memError();
+        if(!head)
+            throw memError();
         head->set(data);
         this->head = head;
         this->tail = head;
@@ -480,8 +480,8 @@ list<C>& list<C>::append(const C data)
 
     listItem<C>* cur = this->tail;
     listItem<C>* new_item = new listItem<C>;
-    //if(!new_item)
-        //throw memError();
+    if(!new_item)
+        throw memError();
     new_item->set(data);
     cur->set_next(*new_item);
     return *this;
@@ -495,8 +495,8 @@ list<C>& list<C>::append(const listItem<C>& elem)
     if(!this->head)
     {
         listItem<C>* head = new listItem<C>;
-        //if(!head)
-            //throw memError();
+        if(!head)
+            throw memError();
         head->data = elem.data;
         this->head = head;
         return *this;
@@ -504,8 +504,8 @@ list<C>& list<C>::append(const listItem<C>& elem)
 
     listItem<C>* cur = this->tail;
     listItem<C>* new_item = new listItem<C>;
-    //if(!new_item)
-        //throw memError();
+    if(!new_item)
+        throw memError();
     new_item->data = elem.data;
     cur->next = new_item;
     this->tail = new_item;
@@ -526,8 +526,8 @@ list<C>& list<C>::insert_front(const list<C>& l)
     }
     listItem<C>* cur;
     listItem<C>* head = new listItem<C>;
-    //if(!head)
-        //throw memError();
+    if(!head)
+        throw memError();
     head->set(l.head->get_data());
 
     listItem<C>* tmp = head;
@@ -536,8 +536,8 @@ list<C>& list<C>::insert_front(const list<C>& l)
     for(; cur; cur = cur->get_next())
     {
         listItem<C>* item = new listItem<C>;
-        //if(!item)
-            //throw memError();
+        if(!item)
+            throw memError();
         tmp->set_next(*item);
         item->set(cur->get_data());
         item->set_next(*this->head);
@@ -562,8 +562,8 @@ list<C>& list<C>::insert_front(const C data)
     }
 
     listItem<C>* new_head = new listItem<C>;
-    //if(!new_head)
-        //throw memError();
+    if(!new_head)
+        throw memError();
     new_head->set(data);
     new_head->set_next(*this->head);
     this->head = new_head;
@@ -581,8 +581,8 @@ list<C>& list<C>::insert_front(const listItem<C>& elem)
     }
 
     listItem<C>* new_head = new listItem<C>;
-    //if(!new_head)
-        //throw memError();
+    if(!new_head)
+        throw memError();
     new_head->data = elem.data;
     new_head->next = this->head;
     this->head = new_head;
@@ -612,8 +612,8 @@ list<C>& list<C>::insert_after(listItem<C>& after, C data)
     listItem<C>* f = this->find(after);
     listItem<C>* tmp = f->get_next();
     listItem<C>* item = new listItem<C>;
-    //if(!item)
-        //throw memError();
+    if(!item)
+        throw memError();
     item->set(data);
     f->set_next(*item);
     item->set_next(*tmp);
@@ -630,8 +630,8 @@ list<C>& list<C>::insert_after(listItem<C>& after, list<C>&  l)
     listItem<C>* buf = f->get_next();
     listItem<C>* cur;
     listItem<C>* head = new listItem<C>;
-    //if(!head)
-        //throw memError();
+    if(!head)
+        throw memError();
     head->set(l.head->get_data());
 
     listItem<C>* tmp = head;
@@ -640,8 +640,8 @@ list<C>& list<C>::insert_after(listItem<C>& after, list<C>&  l)
     for(; cur; cur = cur->get_next())
     {
         listItem<C>* item = new listItem<C>;
-        //if(!item)
-            //throw memError();
+        if(!item)
+            throw memError();
         tmp->set_next(*item);
         item->set(cur->get_data());
         item->set_next(*buf);
@@ -662,8 +662,8 @@ list<C>& list<C>::insert_after(listItem<C>& after, listItem<C>& elem)
     listItem<C>* f = this->find(after);
     listItem<C>* tmp = f->get_next();
     listItem<C>* item = new listItem<C>;
-    //if(!item)
-        //throw memError();
+    if(!item)
+        throw memError();
     item->set(elem.get_data());
     f->set_next(item);
     item->set_next(tmp);
@@ -687,8 +687,8 @@ list<C>& list<C>::insert_before(listItem<C>& before, C data)
     if (tmp != nullptr)
     {
         listItem<C>* item = new listItem<C>;
-        //if(!item)
-            //throw memError();
+        if(!item)
+            throw memError();
         item->set(data);
         tmp->set_next(*item);
         item->set_next(*cur);
@@ -718,8 +718,8 @@ list<C>& list<C>::insert_before(listItem<C>& before, list<C>& l)
     {
         listItem<C>* curr;
         listItem<C>* head = new listItem<C>;
-        //if(!head)
-            //throw memError();
+        if(!head)
+            throw memError();
         head->set(l.head->get_data());
 
         listItem<C>* buf = head;
@@ -728,8 +728,8 @@ list<C>& list<C>::insert_before(listItem<C>& before, list<C>& l)
         for(; curr; curr = curr->get_next())
         {
             listItem<C>* item = new listItem<C>;
-            //if(!item)
-                //throw memError();
+            if(!item)
+                throw memError();
             buf->set_next(*item);
             item->set(curr->get_data());
             item->set_next(*cur);
@@ -762,8 +762,8 @@ list<C>& list<C>::insert_before(listItem<C>& before, listItem<C>& elem)
     if (tmp != nullptr)
     {
         listItem<C>* item = new listItem<C>;
-        //if(!item)
-            //throw memError();
+        if(!item)
+            throw memError();
         item->set(elem.get_data());
         tmp->set_next(*item);
         item->set_next(*cur);
@@ -782,8 +782,8 @@ list<C>& list<C>::insert_after(iterator_list<C>& iter, C data)
     listItem<C>* f = this->find(*iter);
     listItem<C>* tmp = f->get_next();
     listItem<C>* item = new listItem<C>;
-    //if(!item)
-        //throw memError();
+    if(!item)
+        throw memError();
     item->set(data);
     f->set_next(*item);
     item->set_next(*tmp);
@@ -799,8 +799,8 @@ list<C>& list<C>::insert_after(iterator_list<C>& iter, list<C>& l)
     listItem<C>* buf = f->get_next();
     listItem<C>* cur;
     listItem<C>* head = new listItem<C>;
-    //if(!head)
-        //throw memError();
+    if(!head)
+        throw memError();
     head->set(l.head->get_data());
 
     listItem<C>* tmp = head;
@@ -809,8 +809,8 @@ list<C>& list<C>::insert_after(iterator_list<C>& iter, list<C>& l)
     for(; cur; cur = cur->get_next())
     {
         listItem<C>* item = new listItem<C>;
-        //if(!item)
-            //throw memError();
+        if(!item)
+            throw memError();
         tmp->set_next(*item);
         item->set(cur->get_data());
         item->set_next(*buf);
@@ -838,8 +838,8 @@ list<C>& list<C>::insert_before(iterator_list<C>& iter, C data)
     if (tmp != nullptr)
     {
         listItem<C>* item = new listItem<C>;
-        //if(!item)
-            //throw memError();
+        if(!item)
+            throw memError();
         item->set(data);
         tmp->set_next(*item);
         item->set_next(*cur);
@@ -868,8 +868,8 @@ list<C>& list<C>::insert_before(iterator_list<C>& iter, list<C>& l)
     {
         listItem<C>* curr;
         listItem<C>* head = new listItem<C>;
-        //if(!head)
-            //throw memError();
+        if(!head)
+            throw memError();
         head->set(l.head->get_data());
 
         listItem<C>* buf = head;
@@ -878,8 +878,8 @@ list<C>& list<C>::insert_before(iterator_list<C>& iter, list<C>& l)
         for(; curr; curr = curr->get_next())
         {
             listItem<C>* item = new listItem<C>;
-            //if(!item)
-                //throw memError();
+            if(!item)
+                throw memError();
             buf->set_next(*item);
             item->set(curr->get_data());
             item->set_next(*cur);
@@ -901,8 +901,8 @@ list<C>& list<C>::insert_before(iterator_list<C>& iter, list<C>& l)
 template <typename C>
 listItem<C>* list<C>::find(const listItem<C> &elem) const
 {
-    //if(!this->head)
-        //throw emptyError();
+    if(!this->head)
+        throw emptyError();
     listItem<C>* cur = this->head;
     while (cur && cur->get_data()!= elem.get_data())
         cur = cur->get_next();
@@ -914,8 +914,8 @@ listItem<C>* list<C>::find(const listItem<C> &elem) const
 template <typename C>
 listItem<C> *list<C>::find(const C data) const
 {
-    //if(!this->head)
-        //throw emptyError();
+    if(!this->head)
+        throw emptyError();
     listItem<C>* cur = this->head;
     while (cur && cur->get_data() != data)
         cur = cur->get_next();
@@ -950,8 +950,8 @@ void list<C>::sort(bool increase)
 template <typename C>
 void list<C>::reverse()
 {
-    //if(this->length() < 3)
-       // throw rangeError();
+    if(this->length() < 3)
+       throw rangeError();
     this->tail = this->head;
     listItem<C>* one = this->head;
     listItem<C>* two = one->get_next();
@@ -977,8 +977,8 @@ template <typename C>
 C* list<C>::to_array() const
 {
      C* arr = new C[this->length()];
-     //if(!arr)
-         //throw memError();
+     if(!arr)
+         throw memError();
      listItem<C>* tmp = this->head;
      for(size_t i  = 0;  i < this->length(); i++)
      {
@@ -1018,8 +1018,8 @@ list<C>& list<C>::replace(iterator_list<C>& iter,C data)
 template <typename C>
 listItem<C>* list<C>::del(const listItem<C> &elem)
 {
-    //(!this->head)
-        //throw emptyError();
+    if(!this->head)
+        throw emptyError();
     listItem<C>* f = this->find(elem);
 
 
@@ -1047,8 +1047,8 @@ listItem<C>* list<C>::del(const listItem<C> &elem)
 template <typename C>
 listItem<C>* list<C>::del(const C data)
 {
-    //(!this->head)
-        //throw emptyError();
+    if(!this->head)
+        throw emptyError();
     listItem<C>* f = this->find(data);
 
     listItem<C>* cur = this->head;

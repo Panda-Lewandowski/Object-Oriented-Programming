@@ -5,12 +5,16 @@
 class baseError : public std::exception
 {
 public:
-    virtual const char* what() const throw();
+    virtual const char* what() //const throw()
+    {
+        return "OOOppps!!!!";
+    }
+
 };
 
 class memError : public baseError
 {
-    virtual const char* what()  const throw()
+    const char* what()
     {
         return "A memory allocation error";
     }
@@ -18,7 +22,7 @@ class memError : public baseError
 
 class rangeError : public baseError
 {
-    virtual const char* what()  const throw()
+    const char* what()
     {
         return "List is out of range";
     }
@@ -28,7 +32,7 @@ class cmpIterError : public baseError
 {
 public:
 
-    virtual const char* what()  const throw()
+    const char* what()
     {
         return "Comparing iterators with different sources";
     }
@@ -38,7 +42,7 @@ class emptyError : public baseError
 {
 public:
 
-    virtual const char* what()  const throw()
+    const char* what()
     {
         return "Attempt to work with empty list or empty element";
     }
