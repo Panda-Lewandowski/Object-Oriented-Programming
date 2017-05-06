@@ -2,13 +2,11 @@
 #define ITERATORLIST_H
 #include "_iteratorlist.h"
 
-template <typename  C> class list;
-
 template <typename C>
 iterator_list<C>::iterator_list(const list<C>& l)
 {
     this->_list = &l;
-    this->_current = l.get_head();
+    this->_current = l.head;
 }
 
 template <typename C>
@@ -36,17 +34,13 @@ iterator_list<C>& iterator_list<C>::operator =(const iterator_list<C>& it)
 template <typename C>
 void iterator_list<C>::first()
 {
-    this->_current = this->_list->get_head();
+    this->_current = this->_list->head;
 }
 
 template <typename C>
 void iterator_list<C>::last()
 {
-    //if(this->_list->get_head() == nullptr)
-        //throw emptyError();
-
-
-    this->_current = this->_list->get_tail();
+    this->_current = this->_list->tail;
 }
 
 template <typename C>
@@ -55,13 +49,13 @@ void iterator_list<C>::next()
     if(!this->inRange())
        throw rangeError();
 
-    this->_current = this->_current->get_next();
+    this->_current = this->_current->next;
 }
 
 template <typename C>
 bool iterator_list<C>::inRange()
 {
-    return this->_current == nullptr;
+    return !(this->_current == nullptr);
 }
 
 
@@ -76,20 +70,20 @@ iterator_list<C>& iterator_list<C>::operator ++()
 }
 
 template <typename C>
-iterator_list<C>& iterator_list<C>::operator ++(int)
+iterator_list<C> iterator_list<C>::operator ++(int)
 {
     if (!this->inRange())
         throw rangeError();
 
-    iterator_list<C> ret(*this);
+    iterator_list<C> r(*this);
     this->next();
 
-    return ret;
+    return r;
 }
 
 
 template <typename C>
-const C& iterator_list<C>::current() const
+const C iterator_list<C>::current()
 {
     if(!this->inRange())
         throw emptyError();
@@ -116,7 +110,7 @@ iterator_list<C>& iterator_list<C>::operator +=(size_t n)
     {
         //if(!this->inRange())
             //throw rangeError();
-        this->_current = this->_current->get_next();
+        this->_current = this->_current->next;
     }
 
     return *this;
@@ -193,7 +187,7 @@ template <typename C>
 const_iterator_list<C>::const_iterator_list(const list<C>& l)
 {
     this->_list = &l;
-    this->_current = l.get_head();
+    this->_current = l.head;
 }
 
 template <typename C>

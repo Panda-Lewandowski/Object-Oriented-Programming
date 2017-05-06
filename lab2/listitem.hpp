@@ -45,15 +45,6 @@ void listItem<C>::destroy_next()
     this->next = nullptr;
 }
 
-template <typename C>
-listItem<C>* listItem<C>::get_next() const
-{
-    //if(this->next == nullptr)
-        //throw emptyError();
-
-    return this->next;
-}
-
 
 template <typename C>
 C listItem<C>::get_data() const

@@ -10,10 +10,5 @@ public:
     virtual size_t length() const   = 0;
 };
 
-/*class baseContainerItem
-{
-public:
-
-};*/
 
 #endif // BASE_H

@@ -2,14 +2,16 @@
 #define _LISTITEM_H
 #include <iostream>
 #include "_list.h"
+#include "_iteratorlist.h"
 #include "_errors.h"
 
 template <typename  C> class list;
+template <typename C> class iterator_list;
 
 template <typename C>
 class listItem
 {
-protected:
+private:
     listItem* next;
     C data;
 public:
@@ -21,7 +23,6 @@ public:
 
     void set_next(listItem<C>& elem);
     void destroy_next();
-    listItem<C> *get_next() const;
     C get_data() const;
     void set(C data);
 
@@ -34,7 +35,8 @@ public:
     bool operator >(const listItem<C>& l) const;
     bool operator <(const listItem<C>& l) const;
 
-    //friend std::ostream& operator<<(std::ostream& os, listItem<C>& elem);
+    friend class list<C>;
+    friend class iterator_list<C>;
 };
 
 #endif // _LISTITEM_H

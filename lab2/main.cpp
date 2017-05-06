@@ -107,7 +107,10 @@ int main()
 
         cout << "• Конструктор копирования • \n";
         list<int> l5(l3);
-        list<int> l6(l3, 3);
+        iterator_list<int> j(l4);
+        iterator_list<int> k(l4);
+        k += 3;
+        list<int> l6(j, k);
         cout << l5 << "\n";
         cout << l6 << "\n";
 
@@ -119,7 +122,7 @@ int main()
         cout << "• Пустой ли список, созданный конструктором по умолчанию?  "<< l1.is_empty() << "\n" ;
         l1.append(2);
         cout << "• Пустой ли он после добовления элемента? "<< l1.is_empty() << "\n" ;
-
+        cout << l1;
         cout << "• Добавим к нему еще список •\n";
         l1.append(l4);
         cout << l1;
@@ -127,13 +130,15 @@ int main()
 
         cout << "• Вставим в начало поочередно число и список •\n";
         l1.insert_front(6);
-        l1.insert_front(l6);
+        l1.insert_front(l4);
         cout << l1;
 
         cout << "• С помощью итератора вставим на 3 позицию элемент(10) и на 5 позицию список•\n";
         iterator_list<int> i(l1);
-        i += 3;
+        i += 2;
         l1.insert_after(i, 10);
+        cout << l1;
+
         i += 2;
         l1.insert_after(i, l4);
         cout << l1;
@@ -141,6 +146,7 @@ int main()
         cout << "• С помощью итератора вставим перед 6 позицией элемент(8) и список перед 7 позицией •\n";
         i += 1;
         l1.insert_before(i, 8);
+        cout << l1;
         i += 1;
         l1.insert_before(i, l3);
         cout << l1;
@@ -160,26 +166,11 @@ int main()
         }
 
         cout << "\n";
-        cout << "• Удалим голову списка по значению •\n";
-        l1.del(10);
-        cout << l1;
-
-        cout << "• Удалим элемент посередине списка по значению •\n";
-        l1.del(8);
-        cout << l1;
-
-        cout << "• Удалим повторяющийся элемент по значению •\n";
-        l1.del(1);
-        cout << l1;
-
-        cout << "• Удалим хвост списка по значению •\n";
-        l1.del(1);
-        cout << l1;
 
         cout << "• Заменим в уникальном списке(множестве) второй элемент •\n";
-        iterator_list<int> j(l4);
-        j += 1;
-        l4.replace(j, 777);
+        iterator_list<int> m(l4);
+        m += 1;
+        l4.reset(m, 777);
         cout << l4;
     }
     catch(baseError& e)

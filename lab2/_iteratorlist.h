@@ -6,7 +6,6 @@
 #include "_listitem.h"
 
 template <typename C> class list;
-
 template <typename C> class listItem;
 
 template <typename C>
@@ -36,12 +35,12 @@ public:
     void next();
     void last();
     bool inRange();
-    const C& current() const;
+    const C current();
 
     iterator_list<C>& operator =(const iterator_list<C>& it);
 
     iterator_list<C>& operator ++();
-    iterator_list<C>& operator ++(int);
+    iterator_list<C> operator ++(int);
 
     listItem<C>& operator *();
     listItem<C>* operator ->();
@@ -58,9 +57,6 @@ public:
     bool operator >= (const iterator_list<C>& it) const;
 
     int difference(const iterator_list<C> &it);
-
-    friend class list<C>;
-    friend class listItem<C>;
 };
 
 
@@ -92,7 +88,5 @@ public:
 
     int difference(const const_iterator_list<C> &it);
 
-    friend class list<C>;
-    friend class listItem<C>;
 };
 #endif // _ITERATORLIST_H
