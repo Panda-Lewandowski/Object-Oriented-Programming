@@ -10,6 +10,7 @@
 | Lab 3|  ||
 | Lab 4|  ||
 | Lab 5|  ||
+| Exam ||<a href="https://github.com/Panda-Lewandowski/Object-Oriented-Programming/wiki">wiki</a>|
 
 #### <i>Legend:</i>
 <ul>
