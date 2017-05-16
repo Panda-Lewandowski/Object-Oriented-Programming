@@ -11,9 +11,7 @@ template <typename C> class iterator_list;
 template <typename C>
 class listItem
 {
-private:
-    listItem* next;
-    C data;
+
 public:
 
     listItem();
@@ -23,7 +21,7 @@ public:
 
     void set_next(listItem<C>& elem);
     void destroy_next();
-    C get_data() const;
+    const C &get_data() const;
     void set(C data);
 
     list<C>& operator +(list<C> &l);
@@ -37,6 +35,10 @@ public:
 
     friend class list<C>;
     friend class iterator_list<C>;
+
+private:
+    listItem* next;
+    C data;
 };
 
 #endif // _LISTITEM_H

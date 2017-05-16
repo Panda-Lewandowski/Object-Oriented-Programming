@@ -47,7 +47,7 @@ void listItem<C>::destroy_next()
 
 
 template <typename C>
-C listItem<C>::get_data() const
+const C& listItem<C>::get_data() const
 {
     return this->data;
 }

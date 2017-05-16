@@ -73,7 +73,7 @@ list<C>::list(list<C> &&l)
 
 
 template <typename C>
-list<C>::list(C *mass, int n)
+list<C>::list(const C *mass, int n)
 {
     assert(n >= 0);
     if(mass == nullptr || n == 0)
@@ -103,7 +103,7 @@ list<C>::list(C *mass, int n)
 }
 
 template <typename C>
-list<C>::list(C data, size_t n)
+list<C>::list(const C& data, size_t n)
 {
     assert(n >= 0);
     if(n == 0)
@@ -250,10 +250,11 @@ list<C> &list<C>::operator +=(const C data)
 
 
 template <typename C>
-list<C>& list<C>::operator +(const list<C>& l)
+list<C> list<C>::operator +(const list<C>& l)
 {
-    this->append(l);
-    return *this;
+    list<C> new_l(this);
+    new_l->append(l);
+    return new_l;
 
 }
 
@@ -266,10 +267,11 @@ list<C>& list<C>::operator +(const listItem<C>& data)
 }
 
 template <typename C>
-list<C> &list<C>::operator +(const C data)
+list<C> list<C>::operator +(const C data)
 {
-    this->append(data);
-    return *this;
+    list<C> new_l(this);
+    new_l->append(data);
+    return new_l;
 }
 
 
@@ -299,12 +301,6 @@ bool list<C>::operator !=(const list<C>& l) const
 
 }
 
-
-template <typename C>
-size_t list<C>::size() const
-{
-    return (this->length() * sizeof(listItem<C>));
-}
 
 template <typename C>
 void list<C>::clear()
@@ -338,17 +334,17 @@ size_t list<C>::length() const
 
 
 template <typename C>
-iterator_list<C>& list<C>::begin()
+iterator_list<C> list<C>::begin()
 {
     iterator_list<C> it(*this);
-    it.first();
+    it._current = this->head;
 
     return it;
 
 }
 
 template <typename C>
-iterator_list<C>& list<C>::end()
+iterator_list<C> list<C>::end()
 {
     iterator_list<C> it(*this);
     it.last();
@@ -359,7 +355,7 @@ iterator_list<C>& list<C>::end()
 }
 
 template <typename C>
-const_iterator_list<C>& list<C>::begin() const
+const_iterator_list<C> list<C>::begin() const
 {
     const_iterator_list<C> it(*this);
     it.first();
@@ -369,7 +365,7 @@ const_iterator_list<C>& list<C>::begin() const
 }
 
 template <typename C>
-const_iterator_list<C>& list<C>::end() const
+const_iterator_list<C> list<C>::end() const
 {
     const_iterator_list<C> it(*this);
     it.last();
@@ -402,7 +398,7 @@ list<C>& list<C>::append(const list<C>& l)
 }
 
 template <typename C>
-list<C>& list<C>::append(const C data)
+list<C>& list<C>::append(C data)
 {
     listItem<C>* n = new listItem<C>;
     if(!n)
@@ -439,46 +435,10 @@ list<C>& list<C>::append(listItem<C>& elem)
 
 }
 
-template <typename C>
-list<C>& list<C>::insert_front(const list<C>& l)
-{
-    if(!l.head)
-        return *this;
 
-    if(!this->head)
-    {
-        this->append(l);
-        return *this;
-    }
-    listItem<C>* cur;
-    listItem<C>* head = new listItem<C>;
-    if(!head)
-        throw memError();
-    head->set(l.head->get_data());
-
-    listItem<C>* tmp = head;
-    cur = l.head->next;
-
-    for(; cur; cur = cur->next)
-    {
-        listItem<C>* item = new listItem<C>;
-        if(!item)
-            throw memError();
-        tmp->set_next(*item);
-        item->set(cur->get_data());
-        item->set_next(*this->head);
-        tmp = tmp->next;
-    }
-
-    this->head = head;
-    return *this;
-
-
-
-}
 
 template <typename C>
-list<C>& list<C>::insert_front(const C data)
+list<C> &list<C>::add_to_head(const C &data)
 {
     listItem<C>* new_head = new listItem<C>;
     if(!new_head)
@@ -488,6 +448,24 @@ list<C>& list<C>::insert_front(const C data)
     return *this;
 
 }
+
+template <typename C>
+list<C>& list<C>::del_head()
+{
+    this->head = this->head->next;
+
+    return *this;
+
+}
+
+template <typename C>
+list<C>& list<C>::add_to_tail(const C& data)
+{
+    this->append(data);
+    return *this;
+
+}
+
 
 template <typename C>
 list<C>& list<C>::insert_front(listItem<C>& elem)
@@ -508,7 +486,6 @@ list<C>& list<C>::insert_front(listItem<C>& elem)
 
 }
 
-
 template <typename C>
 int list<C>::compare(const list<C>& l)
 {
@@ -521,11 +498,10 @@ int list<C>::compare(const list<C>& l)
         else
             return -1;
     }
-
 }
 
 template <typename C>
-list<C> &list<C>::insert_after(listItem<C>& after, const C data)
+list<C> &list<C>::insert_after(listItem<C>& after, const C& data)
 {
     listItem<C>* f = this->find(after);
     listItem<C>* tmp = f->get_next();
@@ -577,7 +553,7 @@ list<C>& list<C>::insert_after(listItem<C>& after, list<C>&  l)
 template <typename C>
 list<C>& list<C>::insert_after(listItem<C>& after, listItem<C>& elem)
 {
-    listItem<C>* f = this->find(after);
+    listItem<C>* f = &(this->find(after));
     listItem<C>* tmp = f->next;
     listItem<C>* item = new listItem<C>;
     if(!item)
@@ -591,86 +567,11 @@ list<C>& list<C>::insert_after(listItem<C>& after, listItem<C>& elem)
 
 }
 
-template <typename C>
-list<C>& list<C>::insert_before(listItem<C>& before, const C data)
-{
-    listItem<C>* cur = this->head;
-    listItem<C>* tmp = nullptr;
-    while (cur && /*cur->get_data() != before.get_data()*/ cur->next != before.next)
-    {
-        tmp = cur;
-        cur = cur->get_next();
-    }
-
-    if (tmp != nullptr)
-    {
-        listItem<C>* item = new listItem<C>;
-        if(!item)
-            throw memError();
-        item->set(data);
-        tmp->set_next(*item);
-        item->set_next(*cur);
-        return *this;
-    }
-    else
-    {
-        this->insert_front(data);
-        return *this;
-    }
-
-
-}
 
 template <typename C>
-list<C>& list<C>::insert_before(listItem<C>& before, list<C>& l)
+list<C> &list<C>::insert_after(iterator_list<C>& iter, const C& data)
 {
-    listItem<C>* cur = this->head;
-    listItem<C>* tmp = nullptr;
-    while (cur && /*cur->get_data()!= before.get_data()*/ cur->next != before.next)
-    {
-        tmp = cur;
-        cur = cur->get_next();
-    }
-
-    if (tmp != nullptr)
-    {
-        listItem<C>* curr;
-        listItem<C>* head = new listItem<C>;
-        if(!head)
-            throw memError();
-        head->set(l.head->get_data());
-
-        listItem<C>* buf = head;
-        curr = l.head->get_next();
-
-        for(; curr; curr = curr->get_next())
-        {
-            listItem<C>* item = new listItem<C>;
-            if(!item)
-                throw memError();
-            buf->set_next(*item);
-            item->set(curr->get_data());
-            item->set_next(*cur);
-            buf = buf->get_next();
-        }
-
-        tmp->set_next(*head);
-        return *this;
-
-    }
-    else
-    {
-        this->insert_front(l);
-        return *this;
-    }
-
-}
-
-
-template <typename C>
-list<C> &list<C>::insert_after(iterator_list<C>& iter, const C data)
-{
-    listItem<C>* f = this->find(*iter);
+    listItem<C>* f = &(this->find(*iter));
     listItem<C>* item = new listItem<C>;
     if(!item)
         throw memError();
@@ -683,7 +584,7 @@ list<C> &list<C>::insert_after(iterator_list<C>& iter, const C data)
 template <typename C>
 list<C> &list<C>::insert_after(iterator_list<C>& iter, const list<C> &l)
 {
-    listItem<C>* f = this->find(*iter);
+    listItem<C>* f = &(this->find(*iter));
     listItem<C>* buf = f->next;
     listItem<C>* cur;
     listItem<C>* head = new listItem<C>;
@@ -711,226 +612,6 @@ list<C> &list<C>::insert_after(iterator_list<C>& iter, const list<C> &l)
     return *this;
 }
 
-
-template <typename C>
-list<C>& list<C>::insert_before(listItem<C>& before, listItem<C>& elem)
-{
-    listItem<C>* cur = this->head;
-    listItem<C>* tmp = nullptr;
-    while (cur && /*cur->get_data() != before.get_data() && */cur->next != before.next)
-    {
-        tmp = cur;
-        cur = cur->next;
-    }
-
-    if (tmp != nullptr)
-    {
-        listItem<C>* item = new listItem<C>;
-        if(!item)
-            throw memError();
-        item->set(elem.get_data());
-        tmp->set_next(*item);
-        item->set_next(*cur);
-        return *this;
-    }
-    else
-    {
-        this->insert_front(elem);
-        return *this;
-    }
-}
-
-template <typename C>
-list<C>& list<C>::insert_before(iterator_list<C>& iter, const C data)
-{
-    listItem<C>* before = &(*iter);
-    listItem<C>* item = new listItem<C>;
-    if(!item)
-        throw memError();
-    item->set(data);
-    this->insert_before(*before, *item);
-    return *this;
-}
-
-template <typename C>
-list<C>& list<C>::insert_before(const_iterator_list<C>& iter, const C data)
-{
-    listItem<C>* before = &(*iter);
-    listItem<C>* item = new listItem<C>;
-    if(!item)
-        throw memError();
-    item->set(data);
-    this->insert_before(*before, *item);
-    return *this;
-}
-
-template <typename C>
-list<C>& list<C>::insert_before(iterator_list<C>& iter, const list<C>& l)
-{
-    listItem<C>* cur = this->head;
-    listItem<C>* before = &(*iter);
-    listItem<C>* tmp = nullptr;
-    while (cur && /*cur->get_data()!= before->get_data()*/ cur->next != before->next)
-    {
-        tmp = cur;
-        cur = cur->next;
-    }
-
-    if (tmp != nullptr)
-    {
-        listItem<C>* curr;
-        listItem<C>* head = new listItem<C>;
-        if(!head)
-            throw memError();
-        head->set(l.head->get_data());
-
-        listItem<C>* buf = head;
-        curr = l.head->next;
-
-        for(; curr; curr = curr->next)
-        {
-            listItem<C>* item = new listItem<C>;
-            if(!item)
-                throw memError();
-            buf->set_next(*item);
-            item->set(curr->get_data());
-            item->set_next(*cur);
-            buf = buf->next;
-        }
-
-        tmp->set_next(*head);
-        return *this;
-
-    }
-    else
-    {
-        this->insert_front(l);
-        return *this;
-    }
-
-}
-
-template <typename C>
-list<C>& list<C>::insert_before(const_iterator_list<C>& iter, const list<C>& l)
-{
-    listItem<C>* cur = this->head;
-    listItem<C>* before = &(*iter);
-    listItem<C>* tmp = nullptr;
-    while (cur && /*cur->get_data()!= before->get_data()*/ cur->next != before->next)
-    {
-        tmp = cur;
-        cur = cur->next;
-    }
-
-    if (tmp != nullptr)
-    {
-        listItem<C>* curr;
-        listItem<C>* head = new listItem<C>;
-        if(!head)
-            throw memError();
-        head->set(l.head->get_data());
-
-        listItem<C>* buf = head;
-        curr = l.head->next;
-
-        for(; curr; curr = curr->next)
-        {
-            listItem<C>* item = new listItem<C>;
-            if(!item)
-                throw memError();
-            buf->set_next(*item);
-            item->set(curr->get_data());
-            item->set_next(*cur);
-            buf = buf->next;
-        }
-
-        tmp->set_next(*head);
-        return *this;
-
-    }
-    else
-    {
-        this->insert_front(l);
-        return *this;
-    }
-
-}
-
-template <typename C>
-listItem<C>* list<C>::find(const listItem<C> &elem) const
-{
-    if(!this->head)
-        throw emptyError();
-    listItem<C>* cur = this->head;
-    while (cur && cur->get_data()!= elem.get_data())
-        cur = cur->next;
-
-    return cur;
-
-}
-
-template <typename C>
-listItem<C> *list<C>::find(const C data) const
-{
-    if(!this->head)
-        throw emptyError();
-    listItem<C>* cur = this->head;
-    while (cur && cur->get_data() != data)
-        cur = cur->get_next();
-
-    return cur;
-
-}
-
-
-template <typename C>
-void list<C>::sort(bool increase)
-{
-    C* arr = this->to_array();
-    if(increase)
-        qsort(arr, this->length(), sizeof(C), compfunc::comp_inc<C>);
-    else
-        qsort(arr, this->length(), sizeof(C), compfunc::comp_dec<C>);
-
-    listItem<C>* tmp = this->head;
-    size_t i = 0;
-    for(; tmp ; tmp = tmp->next)
-    {
-        tmp->set(arr[i]);
-        this->tail = tmp;
-        i++;
-    }
-
-    delete [] arr;
-
-}
-
-template <typename C>
-void list<C>::reverse()
-{
-    if(this->length() < 3)
-       throw rangeError();
-    this->tail = this->head;
-    listItem<C>* one = this->head;
-    listItem<C>* two = one->next;
-    listItem<C>* three = two->next;
-    do
-    {
-        two->set_next(*one);
-        one = two;
-        two = three;
-        if (three)
-        {
-            three = three->next;
-        }
-    }
-    while(three != nullptr);
-    two->set_next(*one);
-    this->head->destroy_next();
-    this->head = two;
-
-}
-
 template <typename C>
 C* list<C>::to_array() const
 {
@@ -947,14 +628,6 @@ C* list<C>::to_array() const
      return arr;
 }
 
-template <typename C>
-list<C>& list<C>::reset(listItem<C>& elem,C data)
-{
-    listItem<C>* f = this->find(elem);
-    f->set(data);
-    return *this;
-
-}
 
 template <typename C>
 list<C>& list<C>::reset(listItem<C>& elem, listItem<C>& temp)
@@ -965,31 +638,24 @@ list<C>& list<C>::reset(listItem<C>& elem, listItem<C>& temp)
 
 }
 
-template <typename C>
-list<C>& list<C>::reset(iterator_list<C>& iter,C data)
-{
-    listItem<C>* f = this->find(*iter);
-    f->set(data);
-    return *this;
-}
 
 template <typename C>
-listItem<C>* list<C>::del(const listItem<C> &elem)
+C  list<C>::del(const listItem<C> &elem)
 {
     if(!this->head)
         throw emptyError();
-    listItem<C>* f = this->find(elem);
+    listItem<C>* f = &(this->find(elem));
 
 
     listItem<C>* cur = this->head;
     if(cur->get_data() == elem.get_data())
     {
         this->head = this->head->next;
-        return cur;
+        return cur->get_data();
     }
     for(;cur && cur->next != f; cur = cur->next);
     if(cur == nullptr)
-        return nullptr;
+        return -1;
     cur->set_next(*f->next);
 
     if(f == this->tail)
@@ -998,12 +664,12 @@ listItem<C>* list<C>::del(const listItem<C> &elem)
         for(; tmp->next; tmp = tmp->next);
         this->tail = tmp;
     }
-    return f;
+    return f->get_data();
 
 }
 
 template <typename C>
-listItem<C>* list<C>::del(iterator_list<C>& iter)
+C list<C>::del(iterator_list<C>& iter)
 {
     if(!this->head)
         throw emptyError();
@@ -1016,7 +682,7 @@ listItem<C>* list<C>::del(iterator_list<C>& iter)
 
     this->del(f);
 
-    return f;
+    return f->get_data();
 
 }
 
@@ -1031,7 +697,8 @@ std::ostream& operator<<(std::ostream& os, list<C>& l)
         os << "empty";
         return os;
     }
-    for (i.first(); i.inRange(); i++)
+    i = l.begin();
+    for (; i.inRange(); i++)
     {
         os << i.current() << " ";
 

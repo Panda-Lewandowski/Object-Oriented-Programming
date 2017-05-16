@@ -5,43 +5,28 @@
 template <typename C>
 iterator_list<C>::iterator_list(const list<C>& l)
 {
-    this->_list = &l;
     this->_current = l.head;
 }
 
 template <typename C>
 iterator_list<C>::iterator_list(const iterator_list<C>& it)
 {
-    this->_list = it._list;
     this->_current = it._current;
 }
 
 template <typename C>
 iterator_list<C>::~iterator_list()
 {
-    this->_list = nullptr;
     this->_current = nullptr;
 }
 
 template <typename C>
 iterator_list<C>& iterator_list<C>::operator =(const iterator_list<C>& it)
 {
-    this->_list = it._list;
     this->_current = it._current;
     return *this;
 }
 
-template <typename C>
-void iterator_list<C>::first()
-{
-    this->_current = this->_list->head;
-}
-
-template <typename C>
-void iterator_list<C>::last()
-{
-    this->_current = this->_list->tail;
-}
 
 template <typename C>
 void iterator_list<C>::next()
@@ -92,15 +77,15 @@ const C iterator_list<C>::current()
 }
 
 template <typename C>
-listItem<C> &iterator_list<C>::operator *()
+const C& iterator_list<C>::operator *()
 {
-    return *this->_current;
+    return this->_current->get_data();
 }
 
 template <typename C>
-listItem<C>* iterator_list<C>::operator ->()
+C *iterator_list<C>::operator ->()
 {
-    return this->_current;
+    return &(this->_current->get_data());
 }
 
 template <typename C>
@@ -130,8 +115,7 @@ iterator_list<C> iterator_list<C>::operator +(size_t n) const
 template <typename C>
 bool iterator_list<C>::operator != (const iterator_list<C>& it) const
 {
-    if (this->_list != it._list)
-        throw  cmpIterError();
+
 
     return this->_current != it._current;
 }
@@ -145,41 +129,6 @@ bool iterator_list<C>::operator == (const iterator_list<C>& it) const
     return this->_current == it._current;
 }
 
-template <typename C>
-bool iterator_list<C>::operator < (const iterator_list<C>& it) const
-{
-    if (this->_list != it._list)
-       throw  cmpIterError();
-
-    return this->_current < it._current;
-}
-
-template <typename C>
-bool iterator_list<C>::operator > (const iterator_list<C>& it) const
-{
-    if (this->_list != it._list)
-        throw  cmpIterError();
-
-    return this->_current > it._current;
-}
-
-template <typename C>
-bool iterator_list<C>::operator <= (const iterator_list<C>& it) const
-{
-    if (this->_list != it._list)
-        throw  cmpIterError();
-
-    return this->_current <= it._current;
-}
-
-template <typename C>
-bool iterator_list<C>::operator >= (const iterator_list<C>& it) const
-{
-    if (this->_list != it._list)
-       throw  cmpIterError();
-
-    return this->_current >= it._current;
-}
 
 //––––––––––––––––––––––––––––––––––––––––
 
@@ -204,21 +153,6 @@ const_iterator_list<C>::~const_iterator_list()
     this->_current = nullptr;
 }
 
-
-template <typename C>
-void const_iterator_list<C>::first()
-{
-    this->_current = this->_list->get_head();
-}
-
-template <typename C>
-void const_iterator_list<C>::last()
-{
-    if(this->_list->get_head() == nullptr)
-        throw emptyError();
-
-    this->_current = this->_list->get_tail();
-}
 
 template <typename C>
 void const_iterator_list<C>::next()
@@ -246,15 +180,15 @@ const C& const_iterator_list<C>::current() const
 }
 
 template <typename C>
-const listItem<C> &const_iterator_list<C>::operator *()
+const C & const_iterator_list<C>::operator *() const
 {
-    return *this->_current;
+    return *this->_current->get_data();
 }
 
 template <typename C>
-const listItem<C>* const_iterator_list<C>::operator ->()
+const C * const_iterator_list<C>::operator ->() const
 {
-    return this->_current;
+    return &(this->_current->get_data());
 }
 
 
@@ -276,40 +210,6 @@ bool const_iterator_list<C>::operator == (const const_iterator_list<C>& it) cons
     return this->_current == it._current;
 }
 
-template <typename C>
-bool const_iterator_list<C>::operator < (const const_iterator_list<C>& it) const
-{
-    if (this->_list != it._list)
-       throw  cmpIterError();
 
-    return this->_current < it._current;
-}
-
-template <typename C>
-bool const_iterator_list<C>::operator > (const const_iterator_list<C>& it) const
-{
-    if (this->_list != it._list)
-        throw  cmpIterError();
-
-    return this->_current > it._current;
-}
-
-template <typename C>
-bool const_iterator_list<C>::operator <= (const const_iterator_list<C>& it) const
-{
-    if (this->_list != it._list)
-        throw  cmpIterError();
-
-    return this->_current <= it._current;
-}
-
-template <typename C>
-bool const_iterator_list<C>::operator >= (const const_iterator_list<C>& it) const
-{
-    if (this->_list != it._list)
-       throw  cmpIterError();
-
-    return this->_current >= it._current;
-}
 
 #endif // ITERATORLIST_H
