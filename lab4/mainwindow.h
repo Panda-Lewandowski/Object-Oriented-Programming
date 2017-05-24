@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "lift.h"
 
 namespace Ui {
 class MainWindow;
@@ -22,16 +23,23 @@ private slots:
 
     void on_floor3_clicked();
 
-    void on_floor_group_clicked();
-
     void on_floor4_clicked();
-
-    void on_pushButton_5_clicked();
 
     void on_floor5_clicked();
 
+    void on_b1_clicked();
+
+    void on_b2_clicked();
+
+    void on_b3_clicked();
+
+    void on_b4_clicked();
+
+    void on_b5_clicked();
+
 private:
     Ui::MainWindow *ui;
+    lift lft;
 };
 
 #endif // MAINWINDOW_H

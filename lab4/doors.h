@@ -11,26 +11,23 @@ class doors : public QObject
 public:
     enum doors_state
     {
-        opening_state,
-        closing_state,
         opened_state,
-        closed_stete
+        closed_state
     };
     doors(); //конструктор дверей
 
 private:
   doors_state st;
-  void set_state(int);
+  void set_state(doors_state state);
 
 public slots:
-  void opening();   //двери открываются
-  void open();     //двери открыты
-  void closing();  //двери закрываются
-  void close();    //двери закрыты
+  void opening();    //открыть
+  void closing();   //закрыть
 
 signals:
-  void opened();    //открыты
-  void closed();   //закрыты
+  void open();     //двери открыты
+  void close();    //двери закрыты
+
 };
 
 #endif // DOORS_H
