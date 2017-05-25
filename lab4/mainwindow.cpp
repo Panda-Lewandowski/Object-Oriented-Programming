@@ -11,6 +11,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     lft.set_log(ui->text);
+    lft.set_labels(ui->stage_doors, ui->stage_lift);
 }
 
 MainWindow::~MainWindow()
@@ -22,13 +23,14 @@ void MainWindow::on_floor1_clicked()
 {
     //поменять цвет кнопки или текста
     ui->text->append("Нажата кнопка вызова на первом этаже....");
-    lft.to_first_floor();
+    lft.get_order(1);
 
 }
 
 void MainWindow::on_floor2_clicked()
 {
     ui->text->append("Нажата кнопка вызова на втором этаже....");
+    lft.get_order(2);
 }
 
 void MainWindow::on_floor3_clicked()

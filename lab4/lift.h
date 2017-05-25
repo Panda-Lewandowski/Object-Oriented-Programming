@@ -5,6 +5,8 @@
 #include <QTextEdit>
 #include <QSet>
 #include <QQueue>
+#include <QLabel>
+
 #include "doors.h"
 
 using namespace std;
@@ -25,10 +27,12 @@ public:
     };
     lift(); //конструктор лифта
     void set_log(QTextEdit* log);
+    void set_labels(QLabel* doors_l, QLabel* cabin_l);
     void get_order(int o);
 
 private:
     QTextEdit* log;
+    QLabel* lab;
     int min_floor;
     int max_floor;
     int floor;  // текущий этаж
@@ -39,8 +43,8 @@ private:
     QQueue<int>* queue; //очередь заказов
     int opti_order();
     void set_state(lift_state);
-    void wait_here(double);   //ждать столько то секунд
-    void go_to(int);        //топать на такой то этаж
+    void wait_here();   //ждать столько то секунд
+    void go_to(int o);        //топать на такой то этаж
 
 
 public slots:

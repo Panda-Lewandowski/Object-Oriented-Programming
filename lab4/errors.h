@@ -21,6 +21,13 @@ class memError : public baseError
 };
 
 
+class rangeError : public baseError
+{
+    const char* what()  const throw()
+    {
+        return "Range error";
+    }
+};
 
 
 #endif // _ERRORS_H
