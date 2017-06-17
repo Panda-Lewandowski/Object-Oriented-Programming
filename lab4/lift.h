@@ -22,7 +22,6 @@ class lift : public QObject
         going_down,
         opening_state,
         closing_state,
-        arrived_state,
         wait
     };
 public:

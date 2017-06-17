@@ -55,10 +55,6 @@ void lift::set_state(lift_state state)
         s = "закрывает двери...";
         this->lab->setText("Закрывает двери");
         break;
-    case arrived_state:
-        s = "прибыл на место назначения...";
-        this->lab->setText("На месте назначения");
-        break;
     case wait:
         s = "перешел на ждущий режим...";
         this->lab->setText("Ждущий режим");
@@ -90,6 +86,7 @@ void lift::go_up()
     this->set_state(going_up);
     delay(500);
     this->floor++;
+    this->table->display(this->floor);
 
     if(this->floor > this->max_floor)
         throw rangeError();
@@ -128,6 +125,7 @@ void lift::go_down()
     this->set_state(going_down);
     delay(500);
     this->floor--;
+    this->table->display(this->floor);
     if(this->floor < this->min_floor)
         throw rangeError();
     if (this->queue->head() == this->floor)
