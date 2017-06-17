@@ -3,6 +3,8 @@
 
 #include <QObject>
 #include <QTextEdit>
+#include <QLCDNumber>
+#include <QTimer>
 #include <QSet>
 #include <QQueue>
 #include <QLabel>
@@ -14,8 +16,6 @@ using namespace std;
 class lift : public QObject
 {
     Q_OBJECT
-
-public:
     enum lift_state //состояния лифта
     {
         going_up,
@@ -25,14 +25,18 @@ public:
         arrived_state,
         wait
     };
+public:
     lift(); //конструктор лифта
     void set_log(QTextEdit* log);
-    void set_labels(QLabel* doors_l, QLabel* cabin_l);
+    void set_labels(QLabel* doors_l, QLabel* cabin_l, QLCDNumber* table);
     void get_order(int o);
 
 private:
     QTextEdit* log;
     QLabel* lab;
+    QLCDNumber* table;
+    QTimer timer_up;
+    QTimer timer_down;
     int min_floor;
     int max_floor;
     int floor;  // текущий этаж
@@ -43,22 +47,20 @@ private:
     QQueue<int>* queue; //очередь заказов
     int opti_order();
     void set_state(lift_state);
-    void wait_here();   //ждать столько то секунд
     void go_to(int o);        //топать на такой то этаж
-
-
-public slots:
-    void to_first_floor();  //топать на первый этаж
-    void go_up();  //топать вверх
-    void go_down(); //топать вниз
     void reorder(); //пересчитать заказы
 
-signals:
-    void arrived();  //приехал
-    void floor_changed(int);  //пункт назначения поменялся
-    void change_st(int);      //состояние поменялось
+public slots:
+    void go_up();  //топать вверх
+    void go_down(); //топать вниз
     void open_doors();  //открыть двери
     void close_doors(); //закрыть двери
+    void wait_here();   //ждать столько то секунд
+
+signals:
+    void opening_doors();
+    void closing_doors();
+    void arrived();  //приехал
     void up(); //едет вверх
     void down();  //едет вниз
 };

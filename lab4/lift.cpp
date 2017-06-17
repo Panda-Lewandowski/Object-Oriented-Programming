@@ -2,6 +2,7 @@
 #include "errors.h"
 #include <QString>
 #include <stdio.h>
+#include "delay.h"
 
 lift::lift()
 {
@@ -14,13 +15,13 @@ lift::lift()
     this->is_empty = true;
     this->orders = new QSet<int>;
     this->queue = new QQueue<int>;
-    connect(this, SIGNAL(arrived()), this->door, SLOT(opening()));
-    connect(this, SIGNAL(open_doors()), this->door, SLOT(opening()));
-    connect(this, SIGNAL(close_doors()), this->door, SLOT(closing()));
+    connect(this, SIGNAL(arrived()), this->door, SLOT(open()));
+    connect(this, SIGNAL(opening_doors()), this, SLOT(open_doors()));
+    connect(this, SIGNAL(closing_doors()), this, SLOT(close_doors()));
     connect(this, SIGNAL(up()), this, SLOT(go_up()));
     connect(this, SIGNAL(down()), this, SLOT(go_down()));
-    connect(this, SIGNAL(change_st(int)), this, SLOT(reorder()));
-    connect(this, SIGNAL(floor_changed(int)), this, SLOT(reorder()));
+    connect(this, SIGNAL(up()), this->door, SLOT(close()));
+    connect(this, SIGNAL(down()), this->door, SLOT(close()));
 
 }
 
@@ -74,23 +75,20 @@ void lift::set_state(lift_state state)
 
 void lift::wait_here()
 {
-    this->set_state(opening_state);
+
+    emit this->opening_doors();
     this->set_state(wait);
-    this->orders->remove(this->floor);
-    this->queue->dequeue();
 }
 
 
-void lift::to_first_floor()
-{
-    //this->set_state(wait);
-}
 
 void lift::go_up()
 {
-    emit this->close_doors();
-    this->set_state(closing_state);
+    if(this->door->is_open())
+        emit this->closing_doors();
+
     this->set_state(going_up);
+    delay(500);
     this->floor++;
 
     if(this->floor > this->max_floor)
@@ -98,21 +96,16 @@ void lift::go_up()
     if (this->queue->head() == this->floor)
     {
         emit this->arrived();
-        emit this->open_doors();
-        this->set_state(opening_state);
-
         this->queue->dequeue();
         this->orders->remove(this->floor);
 
 
         if(this->orders->isEmpty())
         {
-            this->set_state(wait);
+            this->wait_here();
         }
         else
         {
-            emit this->close_doors();
-            this->set_state(closing_state);
             this->go_to(this->queue->head());
         }
 
@@ -129,18 +122,17 @@ void lift::go_up()
 
 void lift::go_down()
 {
-    emit this->close_doors();
-    this->set_state(closing_state);
-    this->set_state(going_down);
-    this->floor--;
+    if(this->door->is_open())
+        emit this->closing_doors();
 
+    this->set_state(going_down);
+    delay(500);
+    this->floor--;
     if(this->floor < this->min_floor)
         throw rangeError();
     if (this->queue->head() == this->floor)
     {
         emit this->arrived();
-        emit this->open_doors();
-        this->set_state(opening_state);
 
         this->queue->dequeue();
         this->orders->remove(this->floor);
@@ -152,8 +144,6 @@ void lift::go_down()
         }
         else
         {
-            emit this->close_doors();
-            this->set_state(closing_state);
             this->go_to(this->queue->head());
         }
     }
@@ -164,6 +154,20 @@ void lift::go_down()
         else
             emit this->up();
     }
+}
+
+
+void lift::open_doors()
+{
+    this->set_state(opening_state);
+    emit this->door->opening();
+}
+
+
+void lift::close_doors()
+{
+    this->set_state(closing_state);
+    emit this->door->closing();
 }
 
 void lift::reorder()
@@ -228,10 +232,11 @@ void lift::go_to(int o)
 }
 
 
-void lift::set_labels(QLabel* doors_l, QLabel* cabin_l)
+void lift::set_labels(QLabel* doors_l, QLabel* cabin_l, QLCDNumber* table)
 {
     this->door->set_label(doors_l);
     this->lab = cabin_l;
     this->set_state(wait);
+    this->table = table;
 
 }
